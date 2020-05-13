@@ -11,7 +11,7 @@ steps:
   displayName: 'Stage files'
   inputs:
     SourcePath: ''
-    azureSubscription: 'Azure DevOps Connection'
+    azureSubscription: 'devops-connection'
     Destination: 'AzureBlob'
     storage: 'alankdevops'
     ContainerName: 'AzureWebApp'
@@ -21,7 +21,7 @@ steps:
 - task: AzureResourceGroupDeployment@2
   displayName: 'Deploy template'
   inputs:
-     ConnectedServiceName: 'Azure DevOps Connection'
+     ConnectedServiceName: 'devops-connection'
      action: 'Create Or Update Resource Group'
      resourceGroupName: 'devops-webapp'
      location: 'northeurope'
