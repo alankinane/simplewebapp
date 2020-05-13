@@ -11,7 +11,7 @@
     },
     "sku":{
       "type": "string",
-      "defaultValue" : "S3",
+      "defaultValue" : "F1",
       "metadata": {
         "description": "The SKU of App Service Plan, by default is Standard S1"
       }
