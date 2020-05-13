@@ -1,0 +1,32 @@
+name: AzureWebApp.$(Date:yyyy.MM.dd)
+ 
+trigger:
+  batch: true
+ 
+pool:
+  name: Hosted Windows 2019 with VS2019
+ 
+steps:
+- task: AzureFileCopy@3
+  displayName: 'Stage files'
+  inputs:
+    SourcePath: ''
+    azureSubscription: 'Azure DevOps Connection'
+    Destination: 'AzureBlob'
+    storage: 'alankdevops'
+    ContainerName: 'AzureWebApp'
+    outputStorageUri: 'artifactsLocation'
+    outputStorageContainerSasToken: 'artifactsLocationSasToken'
+    sasTokenTimeOutInMinutes: '240'
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Deploy template'
+  inputs:
+     ConnectedServiceName: 'Azure DevOps Connection'
+     action: 'Create Or Update Resource Group'
+     resourceGroupName: 'devops-webapp'
+     location: 'northeurope'
+     templateLocation: 'URL of the file'
+     csmFileLink: '$(artifactsLocation)azuredeploy.json$(artifactsLocationSasToken)'
+     csmParametersFileLink: '$(artifactsLocation)azuredeploy.parameters.json$(artifactsLocationSasToken)'
+     deploymentMode: 'Incremental'
+     deploymentName: 'AzureWebApp-Pipeline'
