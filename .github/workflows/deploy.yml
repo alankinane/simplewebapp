@@ -1,0 +1,39 @@
+name: AzureWebApp.$(Date:yyyy.MM.dd)
+
+on:
+    push:
+      branches:
+        - master
+    pull_request:
+      branches:
+        - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+ 
+    steps:
+    - name: 'Stage files'
+      uses: actions/AzureFileCopy@3
+      with:
+        SourcePath: ''
+        azureSubscription: 'devops-connection'
+        Destination: 'AzureBlob'
+        storage: 'alankdevops'
+        ContainerName: 'AzureWebApp'
+        outputStorageUri: 'artifactsLocation'
+        outputStorageContainerSasToken: 'artifactsLocationSasToken'
+        sasTokenTimeOutInMinutes: '240'
+  
+    - name: 'Deploy template'
+      uses: actions/AzureResourceGroupDeployment@2
+      with:
+        ConnectedServiceName: 'devops-connection'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'devops-webapp'
+        location: 'northeurope'
+        templateLocation: 'URL of the file'
+        csmFileLink: '$(artifactsLocation)azuredeploy.json$(artifactsLocationSasToken)'
+        csmParametersFileLink: '$(artifactsLocation)azuredeploy.parameters.json$(artifactsLocationSasToken)'
+        deploymentMode: 'Incremental'
+        deploymentName: 'AzureWebApp-Pipeline'
