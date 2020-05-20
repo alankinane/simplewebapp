@@ -1,5 +1,4 @@
-  
-# This IaC script provisions a VM within Azure
+# This IaC script deploys a JSON template within Azure
 #
 [CmdletBinding()]
 param(
