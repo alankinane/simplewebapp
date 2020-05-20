@@ -25,7 +25,19 @@ param(
 
     [Parameter(Mandatory = $True)]
     [string]
-    $resourceGroupNameRegion
+    $resourceGroupNameRegion,
+    
+    [Parameter(Mandatory = $True)]
+    [string]
+    $deploymentname,
+    
+    [Parameter(Mandatory = $True)]
+    [string]
+    $templatefile,
+    
+    [Parameter(Mandatory = $True)]
+    [string]
+    $parametersfile   
 )
 #region Login
 # This logs into Azure with a Service Principal Account
