@@ -1,4 +1,4 @@
-name: DeployJSON.
+name: DeployJSON
 env:
   OUTPUT_PATH: ${{ github.workspace }}
 
@@ -33,9 +33,9 @@ jobs:
           
           DEPLOYMENTNAME: jsondeploy
           
-          TEMPLATEFILE: https://raw.githubusercontent.com/alankinane/simplewebapp/master/azuredeploy.json
+          TEMPLATEFILE: azuredeploy.json
           
-          PARAMETERSFILE: https://raw.githubusercontent.com/alankinane/simplewebapp/master/azuredeploy.parameters.json
+          PARAMETERSFILE: azuredeploy.parameters.json
 
         run: >      
           powershell -command "& '${{ env.OUTPUT_PATH }}\deploy.ps1'"
