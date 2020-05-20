@@ -1,4 +1,4 @@
-name: DeployJSON.
+name: DeployJSON
 env:
   OUTPUT_PATH: ${{ github.workspace }}
 
@@ -31,7 +31,7 @@ jobs:
 
           RESOURCE_GROUP_REGION: northeurope
           
-          DEPLOYMENTNAME: jsondeploy
+          DEPLOYMENTNAME: jsondeploy1
           
           TEMPLATEFILE: azuredeploy.json
           
