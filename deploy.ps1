@@ -71,7 +71,7 @@ az group create `
     Write-Output ""
 #endregion
 
-az deployment create --name $deploymentname `
+az deployment sub create --name $deploymentname `
                      --location $resourceGroupNameRegion `
                      --template-file $templatefile `
                      --parameters $parametersfile
