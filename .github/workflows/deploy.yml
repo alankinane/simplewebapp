@@ -45,3 +45,6 @@ jobs:
           -azureSubscriptionName ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           -resourceGroupName %RESOURCE_GROUP%
           -resourceGroupNameRegion %RESOURCE_GROUP_REGION%         
+          -deploymentname %DEPLOYMENTNAME%
+          -templatefile %TEMPLATEFILE%
+          -parametersfile %PARAMETERSFILE%
