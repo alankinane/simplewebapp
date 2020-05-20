@@ -24,7 +24,6 @@ jobs:
           ls '${{ env.OUTPUT_PATH }}'
                
       - name: deploy json
-
         env:
 
           RESOURCE_GROUP: rg-githubdeployment
