@@ -62,7 +62,7 @@ Write-Output ""
 #endregion
 
 #region Create Resource Group
-# This creates the resource group used to house the VM
+# This creates the resource group used to house the deployment
 Write-Output "Creating resource group $resourceGroupName in region $resourceGroupNameRegion..."
 az group create `
     --name $resourceGroupName `
@@ -71,7 +71,10 @@ az group create `
     Write-Output ""
 #endregion
 
+#Create deployment
+# This creates the deployment from the JSON template
 az deployment group create --name $deploymentname `
                      --resource-group $resourceGroupName `
                      --template-file $templatefile `
                      --parameters $parametersfile
+#endscript
