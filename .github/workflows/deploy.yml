@@ -1,4 +1,4 @@
-name: DeployJSON
+name: DeployJSON.
 env:
   OUTPUT_PATH: ${{ github.workspace }}
 
