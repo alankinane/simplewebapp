@@ -1,4 +1,6 @@
-name: AzureWebApp.$(Date:yyyy.MM.dd)
+name: DeployJSON
+env:
+  OUTPUT_PATH: ${{ github.workspace }}
 
 on:
     push:
@@ -13,27 +15,33 @@ jobs:
     runs-on: windows-latest
  
     steps:
-    - name: 'Stage files'
-      uses: actions/AzureFileCopy@3
-      with:
-        SourcePath: ''
-        azureSubscription: 'devops-connection'
-        Destination: 'AzureBlob'
-        storage: 'alankdevops'
-        ContainerName: 'AzureWebApp'
-        outputStorageUri: 'artifactsLocation'
-        outputStorageContainerSasToken: 'artifactsLocationSasToken'
-        sasTokenTimeOutInMinutes: '240'
-  
-    - name: 'Deploy template'
-      uses: actions/AzureResourceGroupDeployment@2
-      with:
-        ConnectedServiceName: 'devops-connection'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: 'devops-webapp'
-        location: 'northeurope'
-        templateLocation: 'URL of the file'
-        csmFileLink: '$(artifactsLocation)azuredeploy.json$(artifactsLocationSasToken)'
-        csmParametersFileLink: '$(artifactsLocation)azuredeploy.parameters.json$(artifactsLocationSasToken)'
-        deploymentMode: 'Incremental'
-        deploymentName: 'AzureWebApp-Pipeline'
+      # checkout code from repo
+      - name: checkout code from repo
+        uses: actions/checkout
+        
+      - name: find powershell file
+        run: |
+          ls '${{ env.OUTPUT_PATH }}'
+               
+      - name: deploy json
+
+        env:
+
+          RESOURCE_GROUP: rg-githubdeployment
+
+          RESOURCE_GROUP_REGION: northeurope
+          
+          DEPLOYMENTNAME: jsondeploy
+          
+          TEMPLATEFILE: https://raw.githubusercontent.com/alankinane/simplewebapp/master/azuredeploy.json
+          
+          PARAMETERSFILE: https://raw.githubusercontent.com/alankinane/simplewebapp/master/azuredeploy.parameters.json
+
+          run: >      
+            powershell -command "& '${{ env.OUTPUT_PATH }}\deploy.ps1'"
+            -servicePrincipal ${{ secrets.SERVICE_PRINCIPAL_APPID }}
+            -servicePrincipalSecret ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
+            -servicePrincipalTenantId ${{ secrets.SERVICE_PRINCIPAL_TENANTID }}
+            -azureSubscriptionName ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+            -resourceGroupName %RESOURCE_GROUP%
+            -resourceGroupNameRegion %RESOURCE_GROUP_REGION%         
